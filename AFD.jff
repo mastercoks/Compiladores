@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--Created with JFLAP 6.4.--><structure>
+	<type>fa</type>
+	<automaton>
+		<!--The list of states.-->
+		<state id="0" name="q0">
+			<x>694.0</x>
+			<y>175.0</y>
+			<label>INICIAL</label>
+			<initial/>
+		</state>
+		<state id="1" name="q1">
+			<x>276.0</x>
+			<y>175.0</y>
+			<label>IDENTIFICADOR</label>
+			<final/>
+		</state>
+		<state id="2" name="q2">
+			<x>276.0</x>
+			<y>46.0</y>
+			<label>NUMERO</label>
+			<final/>
+		</state>
+		<state id="3" name="q3">
+			<x>631.0</x>
+			<y>423.0</y>
+			<label>COMENTARIO</label>
+		</state>
+		<state id="4" name="q4">
+			<x>278.0</x>
+			<y>276.0</y>
+			<label>MENOR_QUE</label>
+			<final/>
+		</state>
+		<state id="5" name="q5">
+			<x>278.0</x>
+			<y>416.0</y>
+			<label>MAIOR_QUE</label>
+			<final/>
+		</state>
+		<state id="6" name="q6">
+			<x>1085.0</x>
+			<y>175.0</y>
+			<label>ATRIBUICAO</label>
+			<final/>
+		</state>
+		<state id="7" name="q7">
+			<x>495.0</x>
+			<y>-5.0</y>
+			<label>ABRE_PARENTESES</label>
+			<final/>
+		</state>
+		<state id="8" name="q8">
+			<x>1089.0</x>
+			<y>419.0</y>
+			<label>IGUALDADE</label>
+			<final/>
+		</state>
+		<state id="9" name="q9">
+			<x>1088.0</x>
+			<y>293.0</y>
+			<label>PONTO_E_VIRGULA</label>
+			<final/>
+		</state>
+		<state id="10" name="q10">
+			<x>978.0</x>
+			<y>175.0</y>
+			<label>DOIS_PONTOS</label>
+		</state>
+		<state id="11" name="q11">
+			<x>911.0</x>
+			<y>-5.0</y>
+			<label>FECHA_PARENTESES</label>
+			<final/>
+		</state>
+		<state id="13" name="q13">
+			<x>489.0</x>
+			<y>419.0</y>
+			<label>ADICAO</label>
+			<final/>
+		</state>
+		<state id="14" name="q14">
+			<x>755.0</x>
+			<y>423.0</y>
+			<label>SUBTRACAO</label>
+			<final/>
+		</state>
+		<state id="15" name="q15">
+			<x>894.0</x>
+			<y>420.0</y>
+			<label>MULTIPLICACAO</label>
+			<final/>
+		</state>
+		<state id="16" name="q16">
+			<x>1085.0</x>
+			<y>78.0</y>
+			<label>DIVISAO</label>
+			<final/>
+		</state>
+		<!--The list of transitions.-->
+		<transition>
+			<from>0</from>
+			<to>0</to>
+			<read> </read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>10</to>
+			<read>:</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>3</to>
+			<read>(.)</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>11</to>
+			<read>)</read>
+		</transition>
+		<transition>
+			<from>2</from>
+			<to>2</to>
+			<read>[0-9]</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>16</to>
+			<read>/</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>14</to>
+			<read>-</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>7</to>
+			<read>(</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>13</to>
+			<read>+</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>2</to>
+			<read>[0-9]</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>15</to>
+			<read>*</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>1</to>
+			<read>[a-zA-Z]</read>
+		</transition>
+		<transition>
+			<from>14</from>
+			<to>3</to>
+			<read>-</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>4</to>
+			<read>&lt;</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>8</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>0</to>
+			<read>\n</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>0</to>
+			<read>/n</read>
+		</transition>
+		<transition>
+			<from>10</from>
+			<to>6</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>0</to>
+			<read>\t</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>5</to>
+			<read>&gt;</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>9</to>
+			<read>;</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>1</to>
+			<read>[a-zA-Z0-9]</read>
+		</transition>
+		<note>
+			<text>checa_palavra_reservada(palavra);</text>
+			<x>183.0</x>
+			<y>254.0</y>
+		</note>
+		<note>
+			<text>Palavras Reservadas
+if
+then
+endif
+while
+do
+enddo
+read
+write
+true
+false</text>
+			<x>57.0</x>
+			<y>163.0</y>
+		</note>
+	</automaton>
+</structure>
