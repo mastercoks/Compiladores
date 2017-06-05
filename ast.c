@@ -20,6 +20,7 @@ printf("%s", r->valor);
 printf(";\n");
 
 
+
 						     program
 					      	 /
 								stmt_seq
@@ -67,8 +68,8 @@ struct no {
 };
 
 //inicializando funções
-struct no * criaNoTerminal(*char valor);
-struct no * criaNoNaoTerminal(struct no * e, tipoOPERACAO o, struct no * d);
+struct no * criaNoTerminal(*char valor, tipoTOKEN t);
+struct no * criaNoNaoTerminal(struct no * e, tipoNO n, *char v, struct no * d);
 int analisaExpr(struct no *raiz);
 
 //construtor
@@ -85,14 +86,14 @@ struct no * criaNoTerminal(*char v, tipoTOKEN t){
 }
 
 //construtor
-struct no * criaNoNaoTerminal(struct no * e, tipoTOKEN t, *char v, struct no * d){
+struct no * criaNoNaoTerminal(struct no * e, tipoNO n *char v, struct no * d){
 	struct no * novoNAO_TERM = (struct no*) malloc(sizeof(struct no));
 
 	novoNAO_TERM->dir = d;
 	novoNAO_TERM->esq = e;
-	novoNAO_TERM->tipo_no = NAO_TERMINAL;
+	novoNAO_TERM->tipo_no = n;
 	novoNAO_TERM->valor = v;
-	novoNAO_TERM->tipo_token = t;
+	novoNAO_TERM->tipo_token = NULL;
 
 	return novoNAO_TERM;
 }

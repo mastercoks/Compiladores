@@ -12,18 +12,18 @@ void yyerror(char *s, ...);
 %%
 
 program:
-              stmt_seq T_PeV //{$$ = makenode();}
+              stmt_seq T_PeV {$$ = criaNoNaoTerminal($1, PROGRAM, ";\n", NULL);}
               ;
 
-stmt_seq:     stmt_seq T_PeV stmt //{ $$ = makenode();}
-              | stmt //{ $$ = makenode();}
+stmt_seq:     stmt_seq T_PeV stmt { $$ = criaNoNaoTerminal($1, STMT_SEQ, ";\n", $3);}
+              | stmt { $$ = criaNoNaoTerminal($1, STMT_SEQ, "", NULL);}
               ;
 
-stmt:         if_stmt  //{ $$ = makenode();}
-              | while_stmt //{ $$ = makenode();}
-              | assign_stmt //{ $$ = makenode();}
-              | read_stmt //{ $$ = makenode();}
-              | write_stmt //{ $$ = makenode();}
+stmt:         if_stmt  { $$ = criaNoNaoTerminal($1, STMT, "", NULL);}
+              | while_stmt { $$ = criaNoNaoTerminal($1, STMT, "", NULL);}
+              | assign_stmt { $$ = criaNoNaoTerminal($1, STMT, "", NULL);}
+              | read_stmt { $$ = criaNoNaoTerminal($1, STMT, "", NULL);}
+              | write_stmt { $$ = criaNoNaoTerminal($1, STMT, "", NULL);}
               ;
 
 if_stmt:      T_IF exp T_THEN stmt_seq T_ENDIF //{ $$ = makenode();}
