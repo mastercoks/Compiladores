@@ -35,7 +35,7 @@ while_stmt:   T_WHILE exp T_DO stmt_seq T_ENDDO //{ $$ = makenode();}
 assign_stmt:  T_ID T_ATRIB exp //{ $$ = makenode();}
               ;
 
-read_stmt:    T_READ T_ID T_PeV //{ $$ = makenode()}
+read_stmt:    T_READ T_ID //{ $$ = makenode()}
               ;
 
 write_stmt:   T_WRITE exp //{ $$ = makenode();}
