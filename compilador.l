@@ -1,8 +1,8 @@
-%option noyywrap
+%option noyywrap yylineno
 %{
 #include <stdio.h>
 #include <stdlib.h>
-int linha = 1;
+#include "y.tab.h"
 %}
 
 /* definições regulares */
@@ -15,9 +15,9 @@ numero          ({digito})+
 comentario      "--"(.)*[\n]
 
 %%
-\n              {linha++;}
+[\n]            {yylineno++;}
 {ws}            {/*ignora espaço e tabulação*/}
-{comentario}    {linha++;/*ignora os comentarios*/}
+{comentario}    {yylineno++;/*ignora os comentarios*/}
 "if"            {return T_IF ;}
 "then"          {return T_THEN ;}
 "endif"         {return T_ENDIF ;}
@@ -37,19 +37,19 @@ comentario      "--"(.)*[\n]
 "/"             {return T_DIV ;}
 ":="            {return T_ATRIB ;}
 ";"             {return T_PeV ;}
-"true"          {return T_TRUE ;}
-"false"         {return T_FALSE ;}
-{id}            {yylval = *yytext - 'a'; return T_ID ;}
-{numero}        {yylval = atoi(yytext); return T_NUM ;}
-{numero}{letra} {printf("Erro léxico na linha %d, identificador malformado!\n", linha);exit(1);}
-.               {printf("Erro léxico na linha %d, token não esperado!\n", linha);exit(1);}
+{id}            {yylval.sval = yytext; return T_ID ;}
+{numero}        {yylval.sval = yytext; return T_NUM ;}
+{numero}{letra} {printf("Erro léxico na linha %d, identificador malformado!\n", yylineno);exit(1);}
+.               {printf("Erro léxico na linha %d, token não esperado!\n", yylineno);exit(1);}
 
 %%
-
-int main( int argc, char *argv[] ){
-    printf("Linha\t| Token\t\t| Lexema\n");
-    FILE *input = fopen(argv[1], "r");
-    yyin = input;
-    yylex();
-    return 0;
-}
+//
+// %%
+//
+// int main( int argc, char *argv[] ){
+//     printf("Linha\t| Token\t\t| Lexema\n");
+//     FILE *input = fopen(argv[1], "r");
+//     yyin = input;
+//     yylex();
+//     return 0;
+// }

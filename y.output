@@ -1,0 +1,463 @@
+Terminals which are not used
+
+   T_IF
+   T_THEN
+   T_ENDIF
+   T_WHILE
+   T_DO
+   T_ENDDO
+   T_ABREP
+   T_FECHAP
+
+
+State 32 conflicts: 2 shift/reduce
+State 33 conflicts: 2 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: stmt_seq T_PeV
+
+    2 stmt_seq: stmt_seq T_PeV stmt
+    3         | stmt
+
+    4 stmt: write_stmt
+    5     | assign_stmt
+    6     | read_stmt
+
+    7 assign_stmt: T_ID T_ATRIB exp
+
+    8 read_stmt: T_READ T_ID
+
+    9 write_stmt: T_WRITE exp
+
+   10 exp: simple_exp T_MENOR simple_exp
+   11    | simple_exp T_MAIOR simple_exp
+   12    | simple_exp T_IGUAL simple_exp
+   13    | simple_exp
+
+   14 simple_exp: simple_exp T_ADD simple_exp
+   15           | simple_exp T_SUB simple_exp
+   16           | termo
+
+   17 termo: termo T_MULT fator
+   18      | termo T_DIV fator
+   19      | fator
+
+   20 fator: T_NUM
+   21      | T_ID
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+T_IF (258)
+T_THEN (259)
+T_ENDIF (260)
+T_WHILE (261)
+T_DO (262)
+T_ENDDO (263)
+T_READ (264) 8
+T_WRITE (265) 9
+T_MENOR (266) 10
+T_MAIOR (267) 11
+T_IGUAL (268) 12
+T_ABREP (269)
+T_FECHAP (270)
+T_ADD (271) 14
+T_SUB (272) 15
+T_MULT (273) 17
+T_DIV (274) 18
+T_ATRIB (275) 7
+T_PeV (276) 1 2
+T_ID (277) 7 8 21
+T_NUM (278) 20
+
+
+Nonterminals, with rules where they appear
+
+$accept (24)
+    on left: 0
+program (25)
+    on left: 1, on right: 0
+stmt_seq (26)
+    on left: 2 3, on right: 1 2
+stmt (27)
+    on left: 4 5 6, on right: 2 3
+assign_stmt (28)
+    on left: 7, on right: 5
+read_stmt (29)
+    on left: 8, on right: 6
+write_stmt (30)
+    on left: 9, on right: 4
+exp (31)
+    on left: 10 11 12 13, on right: 7 9
+simple_exp (32)
+    on left: 14 15 16, on right: 10 11 12 13 14 15
+termo (33)
+    on left: 17 18 19, on right: 16 17 18
+fator (34)
+    on left: 20 21, on right: 17 18 19
+
+
+state 0
+
+    0 $accept: . program $end
+
+    T_READ   shift, and go to state 1
+    T_WRITE  shift, and go to state 2
+    T_ID     shift, and go to state 3
+
+    program      go to state 4
+    stmt_seq     go to state 5
+    stmt         go to state 6
+    assign_stmt  go to state 7
+    read_stmt    go to state 8
+    write_stmt   go to state 9
+
+
+state 1
+
+    8 read_stmt: T_READ . T_ID
+
+    T_ID  shift, and go to state 10
+
+
+state 2
+
+    9 write_stmt: T_WRITE . exp
+
+    T_ID   shift, and go to state 11
+    T_NUM  shift, and go to state 12
+
+    exp         go to state 13
+    simple_exp  go to state 14
+    termo       go to state 15
+    fator       go to state 16
+
+
+state 3
+
+    7 assign_stmt: T_ID . T_ATRIB exp
+
+    T_ATRIB  shift, and go to state 17
+
+
+state 4
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 18
+
+
+state 5
+
+    1 program: stmt_seq . T_PeV
+    2 stmt_seq: stmt_seq . T_PeV stmt
+
+    T_PeV  shift, and go to state 19
+
+
+state 6
+
+    3 stmt_seq: stmt .
+
+    $default  reduce using rule 3 (stmt_seq)
+
+
+state 7
+
+    5 stmt: assign_stmt .
+
+    $default  reduce using rule 5 (stmt)
+
+
+state 8
+
+    6 stmt: read_stmt .
+
+    $default  reduce using rule 6 (stmt)
+
+
+state 9
+
+    4 stmt: write_stmt .
+
+    $default  reduce using rule 4 (stmt)
+
+
+state 10
+
+    8 read_stmt: T_READ T_ID .
+
+    $default  reduce using rule 8 (read_stmt)
+
+
+state 11
+
+   21 fator: T_ID .
+
+    $default  reduce using rule 21 (fator)
+
+
+state 12
+
+   20 fator: T_NUM .
+
+    $default  reduce using rule 20 (fator)
+
+
+state 13
+
+    9 write_stmt: T_WRITE exp .
+
+    $default  reduce using rule 9 (write_stmt)
+
+
+state 14
+
+   10 exp: simple_exp . T_MENOR simple_exp
+   11    | simple_exp . T_MAIOR simple_exp
+   12    | simple_exp . T_IGUAL simple_exp
+   13    | simple_exp .
+   14 simple_exp: simple_exp . T_ADD simple_exp
+   15           | simple_exp . T_SUB simple_exp
+
+    T_MENOR  shift, and go to state 20
+    T_MAIOR  shift, and go to state 21
+    T_IGUAL  shift, and go to state 22
+    T_ADD    shift, and go to state 23
+    T_SUB    shift, and go to state 24
+
+    $default  reduce using rule 13 (exp)
+
+
+state 15
+
+   16 simple_exp: termo .
+   17 termo: termo . T_MULT fator
+   18      | termo . T_DIV fator
+
+    T_MULT  shift, and go to state 25
+    T_DIV   shift, and go to state 26
+
+    $default  reduce using rule 16 (simple_exp)
+
+
+state 16
+
+   19 termo: fator .
+
+    $default  reduce using rule 19 (termo)
+
+
+state 17
+
+    7 assign_stmt: T_ID T_ATRIB . exp
+
+    T_ID   shift, and go to state 11
+    T_NUM  shift, and go to state 12
+
+    exp         go to state 27
+    simple_exp  go to state 14
+    termo       go to state 15
+    fator       go to state 16
+
+
+state 18
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 19
+
+    1 program: stmt_seq T_PeV .
+    2 stmt_seq: stmt_seq T_PeV . stmt
+
+    T_READ   shift, and go to state 1
+    T_WRITE  shift, and go to state 2
+    T_ID     shift, and go to state 3
+
+    $default  reduce using rule 1 (program)
+
+    stmt         go to state 28
+    assign_stmt  go to state 7
+    read_stmt    go to state 8
+    write_stmt   go to state 9
+
+
+state 20
+
+   10 exp: simple_exp T_MENOR . simple_exp
+
+    T_ID   shift, and go to state 11
+    T_NUM  shift, and go to state 12
+
+    simple_exp  go to state 29
+    termo       go to state 15
+    fator       go to state 16
+
+
+state 21
+
+   11 exp: simple_exp T_MAIOR . simple_exp
+
+    T_ID   shift, and go to state 11
+    T_NUM  shift, and go to state 12
+
+    simple_exp  go to state 30
+    termo       go to state 15
+    fator       go to state 16
+
+
+state 22
+
+   12 exp: simple_exp T_IGUAL . simple_exp
+
+    T_ID   shift, and go to state 11
+    T_NUM  shift, and go to state 12
+
+    simple_exp  go to state 31
+    termo       go to state 15
+    fator       go to state 16
+
+
+state 23
+
+   14 simple_exp: simple_exp T_ADD . simple_exp
+
+    T_ID   shift, and go to state 11
+    T_NUM  shift, and go to state 12
+
+    simple_exp  go to state 32
+    termo       go to state 15
+    fator       go to state 16
+
+
+state 24
+
+   15 simple_exp: simple_exp T_SUB . simple_exp
+
+    T_ID   shift, and go to state 11
+    T_NUM  shift, and go to state 12
+
+    simple_exp  go to state 33
+    termo       go to state 15
+    fator       go to state 16
+
+
+state 25
+
+   17 termo: termo T_MULT . fator
+
+    T_ID   shift, and go to state 11
+    T_NUM  shift, and go to state 12
+
+    fator  go to state 34
+
+
+state 26
+
+   18 termo: termo T_DIV . fator
+
+    T_ID   shift, and go to state 11
+    T_NUM  shift, and go to state 12
+
+    fator  go to state 35
+
+
+state 27
+
+    7 assign_stmt: T_ID T_ATRIB exp .
+
+    $default  reduce using rule 7 (assign_stmt)
+
+
+state 28
+
+    2 stmt_seq: stmt_seq T_PeV stmt .
+
+    $default  reduce using rule 2 (stmt_seq)
+
+
+state 29
+
+   10 exp: simple_exp T_MENOR simple_exp .
+   14 simple_exp: simple_exp . T_ADD simple_exp
+   15           | simple_exp . T_SUB simple_exp
+
+    T_ADD  shift, and go to state 23
+    T_SUB  shift, and go to state 24
+
+    $default  reduce using rule 10 (exp)
+
+
+state 30
+
+   11 exp: simple_exp T_MAIOR simple_exp .
+   14 simple_exp: simple_exp . T_ADD simple_exp
+   15           | simple_exp . T_SUB simple_exp
+
+    T_ADD  shift, and go to state 23
+    T_SUB  shift, and go to state 24
+
+    $default  reduce using rule 11 (exp)
+
+
+state 31
+
+   12 exp: simple_exp T_IGUAL simple_exp .
+   14 simple_exp: simple_exp . T_ADD simple_exp
+   15           | simple_exp . T_SUB simple_exp
+
+    T_ADD  shift, and go to state 23
+    T_SUB  shift, and go to state 24
+
+    $default  reduce using rule 12 (exp)
+
+
+state 32
+
+   14 simple_exp: simple_exp . T_ADD simple_exp
+   14           | simple_exp T_ADD simple_exp .
+   15           | simple_exp . T_SUB simple_exp
+
+    T_ADD  shift, and go to state 23
+    T_SUB  shift, and go to state 24
+
+    T_ADD     [reduce using rule 14 (simple_exp)]
+    T_SUB     [reduce using rule 14 (simple_exp)]
+    $default  reduce using rule 14 (simple_exp)
+
+
+state 33
+
+   14 simple_exp: simple_exp . T_ADD simple_exp
+   15           | simple_exp . T_SUB simple_exp
+   15           | simple_exp T_SUB simple_exp .
+
+    T_ADD  shift, and go to state 23
+    T_SUB  shift, and go to state 24
+
+    T_ADD     [reduce using rule 15 (simple_exp)]
+    T_SUB     [reduce using rule 15 (simple_exp)]
+    $default  reduce using rule 15 (simple_exp)
+
+
+state 34
+
+   17 termo: termo T_MULT fator .
+
+    $default  reduce using rule 17 (termo)
+
+
+state 35
+
+   18 termo: termo T_DIV fator .
+
+    $default  reduce using rule 18 (termo)
