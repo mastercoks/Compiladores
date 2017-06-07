@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include "ast.h"
 
 /*
 
@@ -37,35 +34,6 @@ printf(";\n");
 
 */
 
-// define os tokens terminais
-//typedef enum TOKEN { T_IF, T_THEN, T_ENDIF, T_WHILE, T_DO, T_ENDDO, T_READ, T_WRITE, T_MENOR, T_MAIOR, T_IGUAL, T_ABREP, T_FECHAP, T_ADD, T_SUB, T_MULT, T_DIV, T_ATRIB, T_PeV, T_ID, T_NUM }
-//tipoTOKEN;
-
-//define os tipos de nó (agrupando terminais)
-//se mudanças se confirmarem: adicionar tokens das rotinas auxiliares
-typedef enum NO { TERMINAL, PROGRAM, STMT_SEQ, STMT, IF_STMT, WHILE_STMT, ASSIGN_STMT, READ_STMT, WRITE_STMT, EXP, SIMPLE_EXP, TERMO, FATOR }
-	tipoNO;
-
-/*
-* define o tipo nó
-* esq: filho esquerdo
-* dir: filho direito
-* tipo_no = define regras de produção (nós)
-* valor = valor do nó (a ser impresso quando estourado)
-* tipo_token = tipo dos tokens terminais
-*/
-struct no {
-	struct no * esq;
-	struct no * dir;
-	tipoNO tipo_no;
-	char *valor;
-	//tipoTOKEN tipo_token;
-};
-
-//inicializando funções
-struct no * criaNoTerminal(char *valor);
-struct no * criaNoNaoTerminal(struct no * e, tipoNO n, char *v, struct no * d);
-char* analisaExpr(struct no *raiz);
 
 //construtor
 struct no * criaNoTerminal(char *v){
@@ -91,76 +59,83 @@ struct no * criaNoNaoTerminal(struct no * e, tipoNO n, char *v, struct no * d){
 	return novoNAO_TERM;
 }
 
-char *concat(char* s1, char* s2){
-    char *ns = malloc(strlen(s1) + strlen(s2) + 1);
-    ns[0] = '\0';
-    strcat(ns, s1);
-    strcat(ns, s2);
-    return ns;
-}
-
 //*char ao inves de int?
-char* analisaExpr (struct no *r) {
+void analisaAST (struct no *r) {
+
+	if(r != NULL) {
 		switch (r->tipo_no) {
 			case TERMINAL:
-				return (r->valor);
-			case PROGRAM:
-				return concat(analisaExpr(r->esq), r->valor);
-			case STMT_SEQ:
-				if (!strncmp(r->valor, ";\n",1)) {
-					return concat(concat(analisaExpr(r->esq), r->valor), analisaExpr(r->dir));
-					}
-					else {
-						return (analisaExpr(r->esq));
-					}
-
-			case STMT:
-				return (analisaExpr(r->esq));
-
-			//case if a discutir com coqueiro
-			//case if_stmt:		{return (analisaExpr(r->esq) + r->valor);}
-
-			//case while a discutir com coqueiro
-			//case while_stmt	{return (analisaExpr(r->esq) + r->valor);}
-
-			case ASSIGN_STMT:
-				return concat(concat(analisaExpr(r->esq), r->valor),analisaExpr(r->dir));
-			case READ_STMT:
-				return concat(analisaExpr(r->esq), analisaExpr(r->dir));
-			case WRITE_STMT:
-				return concat(analisaExpr(r->esq), analisaExpr(r->dir));
-			case EXP:
-				if (!strncmp(r->valor, "",0)) {
-					return (analisaExpr(r->esq));
-				}
-				else {
-					return concat(concat(analisaExpr(r->esq), r->valor),analisaExpr(r->dir));
-				}
-
-			case SIMPLE_EXP:
-				if (!strncmp(r->valor, "",0)) {
-					return (analisaExpr(r->esq));
-				}
-				else {
-					return concat(concat(analisaExpr(r->esq), r->valor),analisaExpr(r->dir));
-				}
-
-			case TERMO:
-				if (!strncmp(r->valor, "",0)) {
-					return (analisaExpr(r->esq));
-				}
-				else {
-					return concat(concat(analisaExpr(r->esq), r->valor),analisaExpr(r->dir));
-				}
-
-
-			//case fator a ser discutido com coqueiro
-			case FATOR:				{
-				return (analisaExpr(r->esq));
-			}
-
-			default:
-				exit(0);
+        //char var[256];
+				printf("%s", r->valor);
 				break;
+			case IF_STMT:
+			 	printf("if ");
+				analisaAST(r->esq);
+				printf("then ");
+				analisaAST(r->dir);
+				printf("endif");
+			case WRITE_STMT:
+				printf("while ");
+				analisaAST(r->esq);
+				printf("do ");
+				analisaAST(r->dir);
+				printf("enddo");
+			case FATOR:
+				printf("(");
+				analisaAST(r->esq);
+				printf(")");
+				break;
+			default:
+				analisaAST(r->esq);
+				printf("%s", r->valor);
+				analisaAST(r->dir);
 		} //fim do swtich
+	} //fim do if
 }
+/*
+int main(){
+
+	char coks[] = "coks";
+	char read[] = "read ";
+	char vazio[] = "";
+	char pve[] = ";\n";
+	char atrib[] = " := ";
+	char num[] = "3";
+
+
+	//struct no* raiz = criaNoNaoTerminal(criaNoNaoTerminal(criaNoTerminal(read), //READ_STMT, vazio, criaNoTerminal(coks)), PROGRAM, pve, NULL);
+	//printf("%s\n", raiz->valor);
+	//analisaAST(raiz);
+
+
+	struct no * raiz =
+											criaNoNaoTerminal(
+												criaNoNaoTerminal(
+													criaNoNaoTerminal(
+														criaNoNaoTerminal(
+															criaNoNaoTerminal(
+																criaNoTerminal(read)
+															, READ_STMT, vazio, criaNoTerminal(coks))
+														, STMT, vazio, NULL)
+													, STMT_SEQ, vazio, NULL)
+												, STMT_SEQ, pve,
+												criaNoNaoTerminal(
+													criaNoNaoTerminal(
+														criaNoTerminal(coks)
+													, ASSIGN_STMT, atrib,
+													criaNoNaoTerminal(
+														criaNoNaoTerminal(
+															criaNoNaoTerminal(
+																criaNoTerminal(num)
+															, TERMO, vazio, NULL)
+														, SIMPLE_EXP, vazio, NULL)
+													, EXP, vazio, NULL))
+												, STMT, vazio, NULL))
+											, PROGRAM, pve, NULL);
+	//struct no * raiz =
+	//	criaNoOperador(criaNoValor(2), ADD, criaNoOperador((criaNoValor(3)), MUL, criaNoValor(4)));
+
+	analisaAST(raiz);
+return 0;
+}
+*/
