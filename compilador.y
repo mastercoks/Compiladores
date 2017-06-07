@@ -81,7 +81,7 @@ while_stmt:   T_WHILE exp T_DO stmt_seq T_ENDDO   { $$ = criaNoNaoTerminal($<no>
 assign_stmt:  T_ID T_ATRIB exp                    { $$ = criaNoNaoTerminal($<no>1, ASSIGN_STMT, ":=", $<no>3);}
               ;
 
-read_stmt:    T_READ T_ID                         { $$ = criaNoNaoTerminal($<no>1, READ_STMT, "", $<no>2); printf("%s", $2);}
+read_stmt:    T_READ T_ID                         { $$ = criaNoNaoTerminal($<no>1, READ_STMT, "", $<no>2);}
               ;
 
 write_stmt:   T_WRITE exp                         { $$ = criaNoNaoTerminal($<no>1, WRITE_STMT, "", $<no>2);}

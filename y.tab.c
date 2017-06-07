@@ -1352,7 +1352,7 @@ yyreduce:
 
   case 13:
 #line 84 "compilador.y" /* yacc.c:1646  */
-    { (yyval.no) = criaNoNaoTerminal((yyvsp[-1].no), READ_STMT, "", (yyvsp[0].no)); printf("%s", (yyvsp[0].sval));}
+    { (yyval.no) = criaNoNaoTerminal((yyvsp[-1].no), READ_STMT, "", (yyvsp[0].no));}
 #line 1357 "y.tab.c" /* yacc.c:1646  */
     break;
 

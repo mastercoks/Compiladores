@@ -92,7 +92,7 @@ void analisaAST (struct no *r) {
 		} //fim do swtich
 	} //fim do if
 }
-/*
+
 int main(){
 
 	char coks[] = "coks";
@@ -138,4 +138,3 @@ int main(){
 	analisaAST(raiz);
 return 0;
 }
-*/
