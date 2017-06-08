@@ -16,11 +16,12 @@ void yyerror(const char* msg) {
 %union {
   char *sval;
   struct no *no;
+  struct lista *lista;
 }
 
 %start program
 
-%type <no> program
+%type <lista> program
 %type <lista> stmt_seq
 %type <no> stmt
 %type <no> if_stmt
@@ -58,12 +59,11 @@ void yyerror(const char* msg) {
 %left T_ADD T_SUB T_MULT T_DIV
 %%
 
-program::=
-              stmt_seq                     {raiz = $<no>1; printf("passei 1\n");}
+program:      stmt_seq
               ;
 
-stmt_seq:     stmt_seq T_PeV stmt                 { $<lista>$ = criarLista($<lista>1, $<no>3);printf("passei 2\n");}
-              | stmt                              { raiz = $<no>1; printf("passei 3\n"); analisaAST(raiz);}
+stmt_seq:     stmt_seq T_PeV stmt                 { $<lista>$ = criarLista($<no>3, $<lista>1);printf("passei 2\n");}
+              | stmt                              { raiz = criarLista($<no>1, NULL); printf("passei 3\n"); imprimeLista(raiz);}
               ;
 
 stmt:         write_stmt                          { $<no>$ = $<no>1; printf("passei 4\n");}
@@ -79,7 +79,7 @@ if_stmt:      T_IF exp T_THEN stmt_seq T_ENDIF    { $<no>$ = criarNoIf($<no>2, $
 while_stmt:   T_WHILE exp T_DO stmt_seq T_ENDDO   { $<no>$ = criarNoWhile($<no>2, $<lista>4); printf("passei 10\n");}
               ;
 
-assign_stmt:  T_ID T_ATRIB exp                    { $<no>$ = criarNoAtribuicao(criaNoTerminal($1), $<no>3); printf("passei 11\n");}
+assign_stmt:  T_ID T_ATRIB exp                    { $<no>$ = criarNoAtribuicao(criaNoTerminal($<sval>1), $<no>3); printf("%spassei 11\n", $<sval>1);}
               ;
 
 read_stmt:    T_READ T_ID                         { $<no>$ = criarNoRead($2); printf("passei 12\n");}
@@ -105,13 +105,14 @@ termo:        termo T_MULT fator                  { $<no>$ = criarNoOperacao($<n
               ;
 
 fator:        T_ABREP exp T_FECHAP                { $<no>$ = criarNoParenteses($<no>2); printf("passei 24\n");}
-              | T_NUM                             { $<no>$ = criaNoTerminal($1);printf("passei 25\n");}
-              | T_ID                              { $<no>$ = criaNoTerminal($1);printf("passei 26\n");}
+              | T_ID                              { $<no>$ = criaNoTerminal($<sval>1);printf("%spassei 26\n", $<sval>1);}
+              | T_NUM                             { $<no>$ = criaNoTerminal($<sval>1);printf("%spassei 25\n", $<sval>1);}
               ;
 %%
 
 int main(int argc, char *argv[]) {
   FILE *input = fopen(argv[1], "r");
+  yyin = input;
   yyparse();
 
   return 0;

@@ -36,37 +36,37 @@ printf(";\n");
 
 
 //construtor
-struct no * criaNoTerminal(char *v){
+struct no * criaNoTerminal(char v[]){
 	struct no * no = (struct no*) malloc(sizeof(struct no));
 
 	no->dir = NULL;
 	no->esq = NULL;
 	no->tipo_no = TERMINAL;
-	no->valor = v;
+	strcpy(	no->valor, v);
 	no->lista = NULL;
 
 	return no;
 }
 
 //construtor
-struct no * criaNoNaoTerminal(struct no * e, tipoNO n, char *v, struct no * d){
+struct no * criaNoNaoTerminal(struct no * e, tipoNO n, char v[], struct no * d){
 	struct no * no = (struct no*) malloc(sizeof(struct no));
 
 	no->dir = d;
 	no->esq = e;
 	no->tipo_no = n;
-	no->valor = v;
+	strcpy(	no->valor, v);
 	no->lista = NULL;
 
 	return no;
 }
 
-struct no * criarNoRead(char * v) {
+struct no * criarNoRead(char v[]) {
 	struct no * no = (struct no*) malloc(sizeof(struct no));
 	no->dir = NULL;
 	no->esq = NULL;
 	no->tipo_no = READ_STMT;
-	no->valor = v;
+	strcpy(	no->valor, v);
 	no->lista = NULL;
 
 	return no;
@@ -77,7 +77,7 @@ struct no * criarNoWrite(struct no * n) {
 	no->dir = NULL;
 	no->esq = n;
 	no->tipo_no = WRITE_STMT;
-	no->valor = NULL;
+	//no->valor = NULL;
 	no->lista = NULL;
 
 	return no;
@@ -88,7 +88,7 @@ struct no * criarNoOperacao(struct no *esq, tipoNO t, struct no *dir) {
 	no->dir = dir;
 	no->esq = esq;
 	no->tipo_no = t;
-	no->valor = NULL;
+	//no->valor = NULL;
 	no->lista = NULL;
 
 	return no;
@@ -99,7 +99,7 @@ struct no * criarNoParenteses(struct no * n) {
 	no->dir = NULL;
 	no->esq = n;
 	no->tipo_no = PARENTESES;
-	no->valor = NULL;
+	//no->valor = NULL;
 	no->lista = NULL;
 
 	return no;
@@ -110,7 +110,7 @@ struct no * criarNoAtribuicao(struct no * esq, struct no * dir) {
 	no->dir = dir;
 	no->esq = esq;
 	no->tipo_no = ASSIGN_STMT;
-	no->valor = NULL;
+	//no->valor = NULL;
 	no->lista = NULL;
 
 	return no;
@@ -121,7 +121,7 @@ struct no * criarNoIf(struct no * esq, struct lista * lista) {
 	no->dir = NULL;
 	no->esq = esq;
 	no->tipo_no = IF_STMT;
-	no->valor = NULL;
+	//no->valor = NULL;
 	no->lista = lista;
 	return no;
 }
@@ -131,7 +131,7 @@ struct no * criarNoWhile(struct no * esq, struct lista * lista) {
 	no->dir = NULL;
 	no->esq = esq;
 	no->tipo_no = WHILE_STMT;
-	no->valor = NULL;
+	//no->valor = NULL;
 	no->lista = lista;
 	return no;
 }
@@ -145,12 +145,12 @@ struct lista* criarLista( struct no * no, struct lista * proximo) {
 
 //*char ao inves de int?
 void analisaAST (struct no *r) {
-
+	//char teste[] = (char[]) malloc(sizeof(char));
+	//strcpy(	teste, r->teste);
 	if(r != NULL) {
 		switch (r->tipo_no) {
 			case TERMINAL:
-        //char var[256];
-				printf("%s", r->valor);
+				printf("%s1", r->valor);
 				break;
 			case READ_STMT:
 				printf("read %s;\n", r->valor);
@@ -171,7 +171,7 @@ void analisaAST (struct no *r) {
 				break;
 			case IGUAL:
 				analisaAST(r->esq);
-				printf(" = ");
+				printf("1=1");
 				analisaAST(r->dir);
 				break;
 			case ADD:
@@ -217,13 +217,6 @@ void analisaAST (struct no *r) {
 				imprimeLista(r->lista);
 				printf("enddo");
 				break;
-				/*
-			case FATOR:
-				printf("(");
-				analisaAST(r->esq);
-				printf(")");
-				break;
-				*/
 			default:
 				//analisaAST(r->esq);
 				//printf("%s", r->valor);

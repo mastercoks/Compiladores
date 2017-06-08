@@ -15,7 +15,7 @@
     SUB, MULT, DIV, MAIOR, MENOR, IGUAL, PARENTESES }
   	tipoNO;
 
-	struct no * raiz;
+	struct lista * raiz;
   /*
   * define o tipo nó
   * esq: filho esquerdo
@@ -28,7 +28,7 @@
   	struct no * esq;
   	struct no * dir;
   	tipoNO tipo_no;
-  	char *valor;
+  	char valor[];
     struct lista * lista;
   	//tipoTOKEN tipo_token;
   };
@@ -39,8 +39,8 @@
   };
 
   //inicializando funções
-  struct no * criaNoTerminal(char *valor);
-  struct no * criaNoNaoTerminal(struct no * e, tipoNO n, char *v, struct no * d);
+  struct no * criaNoTerminal(char valor[]);
+  struct no * criaNoNaoTerminal(struct no * e, tipoNO n, char v[], struct no * d);
   void analisaAST(struct no *raiz);
   void imprimeLista(struct lista *lista);
 

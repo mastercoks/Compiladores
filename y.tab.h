@@ -100,8 +100,9 @@ union YYSTYPE
 
   char *sval;
   struct no *no;
+  struct lista *lista;
 
-#line 105 "y.tab.h" /* yacc.c:1909  */
+#line 106 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
