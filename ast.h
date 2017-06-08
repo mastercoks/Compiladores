@@ -10,9 +10,12 @@
 
   //define os tipos de nó (agrupando terminais)
   //se mudanças se confirmarem: adicionar tokens das rotinas auxiliares
-  typedef enum NO { TERMINAL, PROGRAM, STMT_SEQ, STMT, IF_STMT, WHILE_STMT, ASSIGN_STMT, READ_STMT, WRITE_STMT, EXP, SIMPLE_EXP, TERMO, FATOR }
+  typedef enum NO { TERMINAL, PROGRAM, STMT_SEQ, STMT, IF_STMT, WHILE_STMT,
+    ASSIGN_STMT, READ_STMT, WRITE_STMT, EXP, SIMPLE_EXP, TERMO, FATOR, ADD,
+    SUB, MULT, DIV, MAIOR, MENOR, IGUAL, PARENTESES }
   	tipoNO;
 
+	struct no * raiz;
   /*
   * define o tipo nó
   * esq: filho esquerdo
@@ -26,12 +29,19 @@
   	struct no * dir;
   	tipoNO tipo_no;
   	char *valor;
+    struct lista * lista;
   	//tipoTOKEN tipo_token;
+  };
+
+  struct lista {
+    struct no * no;
+    struct lista * proximo;
   };
 
   //inicializando funções
   struct no * criaNoTerminal(char *valor);
   struct no * criaNoNaoTerminal(struct no * e, tipoNO n, char *v, struct no * d);
   void analisaAST(struct no *raiz);
+  void imprimeLista(struct lista *lista);
 
 #endif /*AST_H*/

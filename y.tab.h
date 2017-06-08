@@ -96,7 +96,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 15 "compilador.y" /* yacc.c:1909  */
+#line 16 "compilador.y" /* yacc.c:1909  */
 
   char *sval;
   struct no *no;
