@@ -37,5 +37,6 @@ Implementação de um compilador que recebe como entrada um código da linguagem
 	Projeto realizado para a matéria de Compiladores,  UESB 2016.
 
 ## Autores
-	Matheus Coqueiro Andrade, [@mastercoks]](https://github.com/mastercoks/);
-	José Pedro Maioli Calvalcante Menezes[@mai0li]](https://github.com/mai0li/);
+Matheus Coqueiro Andrade, [@mastercoks](https://github.com/mastercoks/);
+
+José Pedro Maioli Calvalcante Menezes, [@mai0li](https://github.com/mai0li/);
