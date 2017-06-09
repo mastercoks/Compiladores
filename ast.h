@@ -4,44 +4,52 @@
   #include <stdlib.h>
   #include <string.h>
 
-  // define os tokens terminais
-  //typedef enum TOKEN { T_IF, T_THEN, T_ENDIF, T_WHILE, T_DO, T_ENDDO, T_READ, T_WRITE, T_MENOR, T_MAIOR, T_IGUAL, T_ABREP, T_FECHAP, T_ADD, T_SUB, T_MULT, T_DIV, T_ATRIB, T_PeV, T_ID, T_NUM }
-  //tipoTOKEN;
-
   //define os tipos de nó (agrupando terminais)
   //se mudanças se confirmarem: adicionar tokens das rotinas auxiliares
-  typedef enum NO { TERMINAL, PROGRAM, STMT_SEQ, STMT, IF_STMT, WHILE_STMT,
-    ASSIGN_STMT, READ_STMT, WRITE_STMT, EXP, SIMPLE_EXP, TERMO, FATOR, ADD,
-    SUB, MULT, DIV, MAIOR, MENOR, IGUAL, PARENTESES }
+  typedef enum NO { TERMINAL, IF_STMT, WHILE_STMT, ASSIGN_STMT, READ_STMT, WRITE_STMT, ADD, SUB, MULT, DIV, MAIOR, MENOR, IGUAL, PARENTESES }
   	tipoNO;
 
 	struct lista * raiz;
+  int tabulacao = 0;
+
   /*
   * define o tipo nó
   * esq: filho esquerdo
   * dir: filho direito
   * tipo_no = define regras de produção (nós)
   * valor = valor do nó (a ser impresso quando estourado)
-  * tipo_token = tipo dos tokens terminais
+  * lista = lista que aponta para o próximo STMT
   */
   struct no {
   	struct no * esq;
   	struct no * dir;
   	tipoNO tipo_no;
-  	char valor[];
+  	char* valor  ;
     struct lista * lista;
-  	//tipoTOKEN tipo_token;
   };
 
+  /*
+  * define o tipo nó
+  * no = nó que pertence a lista
+  * proximo = lista que aponta para o próximo STMT
+  */
   struct lista {
     struct no * no;
     struct lista * proximo;
   };
 
   //inicializando funções
-  struct no * criaNoTerminal(char valor[]);
-  struct no * criaNoNaoTerminal(struct no * e, tipoNO n, char v[], struct no * d);
+  struct no * criaNoTerminal(char* v);
+  struct no * criarNoRead(char* v);
+  struct no * criarNoWrite(struct no * n);
+  struct no * criarNoOperacao(struct no *esq, tipoNO t, struct no *dir);
+  struct no * criarNoParenteses(struct no * esq);
+  struct no * criarNoAtribuicao(struct no * esq, struct no * dir);
+  struct no * criarNoIf(struct no * esq, struct lista * lista);
+  struct no * criarNoWhile(struct no * esq, struct lista * lista);
+  struct lista* criarLista( struct no * no, struct lista * proximo);
   void analisaAST(struct no *raiz);
   void imprimeLista(struct lista *lista);
+  void tabular();
 
 #endif /*AST_H*/

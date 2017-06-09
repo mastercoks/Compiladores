@@ -43,13 +43,3 @@ comentario      "--"(.)*[\n]
 .               {printf("Erro léxico na linha %d, token não esperado!\n", yylineno);exit(1);}
 
 %%
-//
-// %%
-//
-// int main( int argc, char *argv[] ){
-//     printf("Linha\t| Token\t\t| Lexema\n");
-//     FILE *input = fopen(argv[1], "r");
-//     yyin = input;
-//     yylex();
-//     return 0;
-// }

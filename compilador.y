@@ -9,7 +9,8 @@ extern int yylex();
 extern int yyparse();
 extern FILE *yyin;
 void yyerror(const char* msg) {
-      fprintf(stderr, "%s\n", msg);
+      fprintf(stderr, "Erro de sintaxe encontrado!\n");
+      exit(1);
     }
 %}
 
@@ -33,6 +34,7 @@ void yyerror(const char* msg) {
 %type <no> simple_exp
 %type <no> termo
 %type <no> fator
+%type <no> id
 
 %token T_IF
 %token T_THEN
@@ -59,55 +61,57 @@ void yyerror(const char* msg) {
 %left T_ADD T_SUB T_MULT T_DIV
 %%
 
-program:      stmt_seq
+program:      stmt_seq T_PeV                      { raiz = $<lista>1; imprimeLista(raiz);}
               ;
 
-stmt_seq:     stmt_seq T_PeV stmt                 { $<lista>$ = criarLista($<no>3, $<lista>1);printf("passei 2\n");}
-              | stmt                              { raiz = criarLista($<no>1, NULL); printf("passei 3\n"); imprimeLista(raiz);}
+stmt_seq:     stmt_seq T_PeV stmt                 { $<lista>$ = criarLista($<no>3, $<lista>1); }
+              | stmt                              { $<lista>$ = criarLista($<no>1, NULL);}
               ;
 
-stmt:         write_stmt                          { $<no>$ = $<no>1; printf("passei 4\n");}
-              | while_stmt                        { $<no>$ = $<no>1; printf("passei 5\n");}
-              | assign_stmt                       { $<no>$ = $<no>1; printf("passei 6\n");}
-              | read_stmt                         { $<no>$ = $<no>1; printf("passei 7\n");}
-              | if_stmt                           { $<no>$ = $<no>1; printf("passei 8\n");}
+stmt:         write_stmt                          { $<no>$ = $<no>1; }
+              | while_stmt                        { $<no>$ = $<no>1; }
+              | assign_stmt                       { $<no>$ = $<no>1; }
+              | read_stmt                         { $<no>$ = $<no>1; }
+              | if_stmt                           { $<no>$ = $<no>1; }
               ;
 
-if_stmt:      T_IF exp T_THEN stmt_seq T_ENDIF    { $<no>$ = criarNoIf($<no>2, $<lista>4); printf("passei 9\n");}
+if_stmt:      T_IF exp T_THEN stmt_seq T_ENDIF    { $<no>$ = criarNoIf($<no>2, $<lista>4); }
               ;
 
-while_stmt:   T_WHILE exp T_DO stmt_seq T_ENDDO   { $<no>$ = criarNoWhile($<no>2, $<lista>4); printf("passei 10\n");}
+while_stmt:   T_WHILE exp T_DO stmt_seq T_ENDDO   { $<no>$ = criarNoWhile($<no>2, $<lista>4); }
               ;
 
-assign_stmt:  T_ID T_ATRIB exp                    { $<no>$ = criarNoAtribuicao(criaNoTerminal($<sval>1), $<no>3); printf("%spassei 11\n", $<sval>1);}
+assign_stmt:  id T_ATRIB exp                    { $<no>$ = criarNoAtribuicao($<no>1, $<no>3);}
               ;
 
-read_stmt:    T_READ T_ID                         { $<no>$ = criarNoRead($2); printf("passei 12\n");}
+read_stmt:    T_READ T_ID                         { $<no>$ = criarNoRead($2); }
               ;
 
-write_stmt:   T_WRITE exp                         { $<no>$ = criarNoWrite($<no>2); printf("passei 13\n");}
+write_stmt:   T_WRITE exp                         { $<no>$ = criarNoWrite($<no>2); }
               ;
 
-exp:          simple_exp T_MENOR simple_exp       { $<no>$ = criarNoOperacao($<no>1, MENOR, $<no>3); printf("passei 14\n");}
-              | simple_exp T_MAIOR simple_exp     { $<no>$ = criarNoOperacao($<no>1, MAIOR, $<no>3); printf("passei 15\n");}
-              | simple_exp T_IGUAL simple_exp     { $<no>$ = criarNoOperacao($<no>1, IGUAL, $<no>3); printf("passei 16\n");}
-              | simple_exp                        { $<no>$ = $<no>1; printf("passei 17\n");}
+exp:          simple_exp T_MENOR simple_exp       { $<no>$ = criarNoOperacao($<no>1, MENOR, $<no>3); }
+              | simple_exp T_MAIOR simple_exp     { $<no>$ = criarNoOperacao($<no>1, MAIOR, $<no>3); }
+              | simple_exp T_IGUAL simple_exp     { $<no>$ = criarNoOperacao($<no>1, IGUAL, $<no>3); }
+              | simple_exp                        { $<no>$ = $<no>1; }
               ;
 
-simple_exp:   simple_exp T_ADD simple_exp         { $<no>$ = criarNoOperacao($<no>1, ADD, $<no>3); printf("passei 18\n");}
-              | simple_exp T_SUB simple_exp       { $<no>$ = criarNoOperacao($<no>1, SUB, $<no>3); printf("passei 19\n");}
-              | termo                             { $<no>$ = $<no>1; printf("passei 20\n");}
+simple_exp:   simple_exp T_ADD simple_exp         { $<no>$ = criarNoOperacao($<no>1, ADD, $<no>3); }
+              | simple_exp T_SUB simple_exp       { $<no>$ = criarNoOperacao($<no>1, SUB, $<no>3); }
+              | termo                             { $<no>$ = $<no>1; }
               ;
 
-termo:        termo T_MULT fator                  { $<no>$ = criarNoOperacao($<no>1, MULT, $<no>3); printf("passei 21\n");}
-              | termo T_DIV fator                 { $<no>$ = criarNoOperacao($<no>1, DIV, $<no>3); printf("passei 22\n");}
-              | fator                             { $<no>$ = $<no>1; printf("passei 23\n");}
+termo:        termo T_MULT fator                  { $<no>$ = criarNoOperacao($<no>1, MULT, $<no>3); }
+              | termo T_DIV fator                 { $<no>$ = criarNoOperacao($<no>1, DIV, $<no>3); }
+              | fator                             { $<no>$ = $<no>1; }
               ;
 
-fator:        T_ABREP exp T_FECHAP                { $<no>$ = criarNoParenteses($<no>2); printf("passei 24\n");}
-              | T_ID                              { $<no>$ = criaNoTerminal($<sval>1);printf("%spassei 26\n", $<sval>1);}
-              | T_NUM                             { $<no>$ = criaNoTerminal($<sval>1);printf("%spassei 25\n", $<sval>1);}
+fator:        T_ABREP exp T_FECHAP                { $<no>$ = criarNoParenteses($<no>2); }
+              | T_ID                              { $<no>$ = criaNoTerminal($<sval>1); }
+              | T_NUM                             { $<no>$ = criaNoTerminal($<sval>1); }
               ;
+
+id:           T_ID                                { $$ = criaNoTerminal($<sval>1);}
 %%
 
 int main(int argc, char *argv[]) {
